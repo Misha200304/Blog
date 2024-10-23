@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin - Manage Posts</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-green-600 p-4 text-white text-center">
+        <h1 class="text-3xl font-bold">Admin - Manage Blog Posts</h1>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <form id="addPostForm" class="bg-white shadow-md p-6 rounded-lg mb-4">
+            <h2 class="text-xl font-bold mb-4">Add New Post</h2>
+            <input type="text" id="title" placeholder="Post Title" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+            <textarea id="summary" placeholder="Post Summary" class="w-full p-2 mb-4 border border-gray-300 rounded-lg"></textarea>
+            <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg">Add Post</button>
+        </form>
+
+        <div id="adminPosts" class="grid grid-cols-1 gap-4">
+            <!-- Managed blog posts will appear here -->
+        </div>
+    </main>
+
+    <script>
+        const adminPosts = document.getElementById('adminPosts');
+        const addPostForm = document.getElementById('addPostForm');
+
+        const posts = [];
+
+        addPostForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const summary = document.getElementById('summary').value;
+            posts.push({ title, summary });
+            displayPosts();
+        });
+
+        function displayPosts() {
+            adminPosts.innerHTML = '';
+            posts.forEach((post, index) => {
+                const postEl = document.createElement('div');
+                postEl.className = 'bg-white shadow-md p-4 rounded-lg';
+                postEl.innerHTML = `
+                    <h3 class="text-xl font-bold mb-2">${post.title}</h3>
+                    <p class="text-gray-700 mb-2">${post.summary}</p>
+                    <button onclick="deletePost(${index})" class="text-red-600 hover:underline">Delete</button>
+                `;
+                adminPosts.appendChild(postEl);
+            });
+        }
+
+        function deletePost(index) {
+            posts.splice(index, 1);
+            displayPosts();
+        }
+    </script>
+
+</body>
+</html>
